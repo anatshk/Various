@@ -18,6 +18,12 @@ Resources:
 http://initd.org/psycopg/docs/index.html
 """
 
+# TODO: create a database for testing - http://www.postgresqltutorial.com/postgresql-create-database/
+
+
+# TODO: How to define a string
+# TODO: http://initd.org/psycopg/docs/usage.html#the-problem-with-the-query-parameters
+
 
 class DataBase:
     AVAILABLE_COLUMN_TYPES = ['integer', 'varchar']  # TODO: add other available column types
