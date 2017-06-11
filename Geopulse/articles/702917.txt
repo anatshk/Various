@@ -1,0 +1,22 @@
+Technology News | Mon Mar 2, 2015 | 6:07pm EST
+Exclusive: Obama sharply criticizes China's plans for new technology rules
+By Jeff Mason | WASHINGTON
+WASHINGTON President Barack Obama on Monday sharply criticized China's plans for new rules on U.S. tech companies, urging Beijing to change the policy if it wants to do business with the United States and saying he had raised it with President Xi Jinping.
+In an interview with Reuters, Obama said he was concerned about Beijing's plans for a far-reaching counterterrorism law that would require technology firms to hand over encryption keys, the passcodes that help protect data, and install security "backdoors" in their systems to give Chinese authorities surveillance access.
+"This is something that Ive raised directly with President Xi," Obama said. "We have made it very clear to them that this is something they are going to have to change if they are to do business with the United States."
+The Chinese government sees the rules as crucial to protect state and business secrets. Western companies say they reinforce increasingly onerous terms of doing business in the world's second-largest economy and heighten mistrust over cybersecurity between Washington and Beijing.
+A Chinese parliamentary body read a second draft of the country's first anti-terrorism law last week and is expected to adopt the legislation in the coming weeks or months.
+The initial draft, published by the National People's Congress late last year, requires companies to also keep servers and user data within China, supply law enforcement authorities with communications records and censor terrorism-related Internet content.
+The laws "would essentially force all foreign companies, including U.S. companies, to turn over to the Chinese government mechanisms where they can snoop and keep track of all the users of those services," Obama said.
+"As you might imagine tech companies are not going to be willing to do that," he said.
+The scope of the rules reaches far beyond a recently adopted set of financial industry regulations that pushed Chinese banks to purchase from domestic technology vendors.
+The implications for Silicon Valley companies, ranging from Microsoft Corp (MSFT.O) to Apple Inc (AAPL.O), have set the stage for yet another confrontation over cybersecurity and technology policy, a major irritant in U.S.-China relations.
+Obama said the rules could also backfire on China.
+"Those kinds of restrictive practices I think would ironically hurt the Chinese economy over the long term because I dont think there is any U.S. or European firm, any international firm, that could credibly get away with that wholesale turning over of data, personal data, over to a government," he said.
+A U.S. official told Reuters last week that the Obama administration has conveyed its concerns about the anti-terrorism draft law to China.
+REGULATORY PRESSURE
+Although the counterterrorism provisions would apply to both domestic and foreign technologies, officials in Washington and Western business lobbies argue the law, combined with the new banking rules and a slew of anti-trust investigations, amount to unfair regulatory pressure targeting foreign companies.
+To be sure, Western governments, including in the United States and Britain, have for years requested tech firms to disclose encryption methods, with varying degrees of success.
+Officials including FBI director James Comey and National Security Agency (NSA) director Mike Rogers publicly warned Internet companies including Apple and Google late last year against using encryption that law enforcement cannot break.
+Beijing has argued the need to quickly ratchet up its cybersecurity measures in the wake of former NSA contractor Edward Snowden's revelations of sophisticated U.S. spying techniques.
+China is drafting the anti-terrorism law at a time when Chinese leaders say the country faces a serious threat from religious extremists and separatists. Hundreds of people have been killed over the past two years in the far-western region of Xinjiang in unrest the government has blamed on Islamists who want to establish a separate state called East Turkestan.

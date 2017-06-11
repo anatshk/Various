@@ -1,0 +1,12 @@
+December 19, 2016, 9:00 AM EST
+Canada PM announces innovation center with BlackBerry CEO Chen
+The deal could involve government funding in the future
+John Chen
+Photographer: Michael Nagle/Bloomberg
+BlackBerry Ltd. and the Canadian government are opening a research center for self-driving cars that raises the possibility of government backing for the former smartphone maker’s automotive software unit.
+Chief Executive Officer John Chen and Prime Minister Justin Trudeau announced the center at QNX’s headquarters near Ottawa, Ontario, where it will be based. BlackBerry’s QNX unit has been building software to run in-car entertainment systems for years. In January of this year, the company said it was working to get automakers to use its programs to run self-driving features as well in a bid to keep its products central to the evolution of car technology.
+The program doesn’t include any federal funding at this point, but it could in the future, said John Wall, head of QNX. Canadian governments already give hundreds of millions of dollars in subsidies to traditional automakers and this deal could open the door for similar arrangements focused on technology and software, Wall said.
+QNX, which BlackBerry bought in 2010, is a 35-year-old company that builds highly specialized operating systems for everything from wind turbines to anti-tank missiles. About two dozen employees have been hired by Apple Inc. for their own vehicle operating system project, including QNX founder Dan Dodge, people familiar with the matter have said. The Silicon Valley tech giant even placed an office a stone’s throw away from QNX’s headquarters to house the project.
+The mass exodus didn’t hurt QNX’s long-term plans, Wall said. The unit has around 400 engineers and is actively hiring new ones to work on vehicle software, he said.
+QNX isn’t building an algorithm that would actually be able to drive a car. Instead, it’s focusing on the underlying operating system that other companies could build applications on top of. The space is crowded though. Apple is building its own system and QNX competes with other little-known companies including Green Hills Software and Intel Corp.-owned Wind River to build operating systems tailored to specific tasks.
+Before it's here, it's on the Bloomberg Terminal.

@@ -1,0 +1,42 @@
+Technology News | Thu May 14, 2015 | 5:28pm EDT
+Nvidia wants to leap from video games to self-driving cars
+left
+right
+Electronic dashboard components are shown at a graphic display of an Audi automobile in Santa Clara, California in this February 11, 2015 file photo. REUTERS/Robert Galbraith
+1/3
+left
+right
+A video screen depicting the view of a self driving vehicle is shown on  a graphic display at Nvidia in Santa Clara, California in this February 11, 2015 file photo. REUTERS/Robert Galbraith
+2/3
+left
+right
+An electronic dashboard on a graphic display in an automobile lab at Nvidia in Santa Clara, California in this February 11, 2015 file photo. REUTERS/Robert Galbraith
+3/3
+By Paul Lienert | DETROIT
+DETROIT It took Silicon Valley chipmaker Nvidia Corp the better part of a decade to gain acceptance as a global automotive supplier, a lesson for other technology firms hoping to make a similar transition from consumer electronics to car components.
+Nvidia had a thriving business in supplying powerful graphics processors for video game consoles and laptop computers when representatives of Volkswagen AG (VOWG_p.DE) asked if it could adapt the same realistic, three-dimensional displays for the dashboards of Audi luxury cars.
+That was 10 years ago  several lifetimes in Silicon Valley terms, but just a couple of model changes ago for the big car maker. It took six years for Nvidia to develop the chips to power the 3-D navigation system display that launched on the 2011 Audi A8, the brands top-of-the-line sedan, compared with three to four years to develop a new chip for gaming applications.
+Along the way, Nvidia engineers learned the hard way they could not just pop a chip designed for a laptop or a game console into a car.
+We had to be taught what automotive grade meant, recalls Danny Shapiro, Nvidias senior director of automotive operations. In simple terms, that meant no reboots  because a dashboard screen that fails to light up means an angry customer and possibly an expensive warranty repair.
+The decade-long effort enabled Nvidia to make the jump from the world of computers and game consoles into the fast-growing market for advanced automotive displays and automated driving systems. It is a leap that other Silicon Valley tech companies want to emulate to cash in on the convergence of automobiles and digital connectivity.
+Nvidias success in landing processors on cars including the Audi A8 and the Tesla Model S sedan illustrates the growing willingness among automakers to look beyond their traditional suppliers to obtain a technological edge.
+They offer us computing systems with the strength to process vast amounts of data required by new driver assistance systems and displays, said Ulrich Hackenberg, Audis head of technical development.
+Nvidia is still a niche player with a long way to go to crack the top league of traditional automotive chip suppliers. Much larger companies, including Japans Renesas Electronics Corp and U.S. chipmakers Texas Instruments Inc, Intel Corp and Qualcomm Inc, dominate the automotive chip business.
+Nvidia's automotive sales represented just 4 percent of the company's $4.7 billion annual revenue in its most recent fiscal year. That in turn is just one-tenth of the $1.86 billion in automotive semiconductors that Texas Instruments sold last year.
+Brooke Williams, TIs business manager for driver assistance systems, said his company already knows how to deal with automakers demands after 35 years of supplying products for vehicles. We understand the automotive design cycle and how the vehicle manufacturers and suppliers work.
+SELF-DRIVING CARS
+Nvidia has made the leap to infotainment systems in vehicles, but not yet to self-driving cars.
+The company had just $23 million in sales in the automotive segment in 2011. Growth has surged since. This year, the company expects automotive revenue of $183 million, and says it has booked more than $2 billion in future automotive business, most ofthat involving chips for digital displays and infotainment. By 2020, Nvidia expects to have chips on more than 32 million vehicles.
+The company is pushing to crack the emerging market for driver assistance systems, which include such tasks as self-parking and semi-automated steering and braking. Those systems require huge amounts of computing power in very small packages. Nvidia has developed and begun selling a chip called the Tegra X1 for automotive and gaming uses, which it says can put the power of a supercomputer in a package about the size of a postage stamp.
+Nvidia brings unparalleled graphics capabilities that could prove critical building blocks for driver assistance systems, said Morgan Stanley analyst Joseph Moore.
+Nvidia got coaching from automotive customers who liked the companys technology but were not sure of its ability to measure up to their standards.
+Early in their relationship, Audi executives took Nvidia engineers on a trip to Audi's home factory in Ingolstadt, Germany.
+"We told the Nvidia guys, 'you make one part, but we assemble a car here from 10,000 pieces,'" said Mathias Halliger, Audi's senior systems architect for connected vehicle technologies. "If even one part is bad, we have a problem.
+To drive home the point, an Audi tour guide noted that one of the luxury cars had been rejected because of a tiny flaw in the paint.
+The plant tour, Halliger said, "helped Nvidia to understand our requirements. It showed dramatically what we were looking for."
+There was more for Nvidia to learn. A typical automotive production cycle can run five years or more, compared with one year for many consumer products. Nvidia had to go back to its suppliers to make sure that key components, from memory to power supply, could be upgraded as needed over that longer life cycle.
+When you work with car companies and you engage in these developments with them, over the years you adopt their culture, said Nvidia Chief Executive Officer Jen-Hsun Huang, whose personal automotive stable includes two Ferraris and two Teslas.  But the car is dying to be reinvented.
+(Editing by Joe White and Matthew Lewis)
+Next In Technology News
+Amazon starts flexing muscle in new space: air cargo
+ALLENTOWN, Pa. A cargo plane emblazoned with "Prime Air" descended from an empty sky at Lehigh Valley International Airport on Tuesday, ninety minutes from the bustle of New York City, loaded with crates of goods during the peak holiday shopping season.

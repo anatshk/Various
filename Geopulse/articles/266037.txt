@@ -1,0 +1,14 @@
+Credit RSS | Tue Sep 8, 2015 | 7:42am EDT
+U&-&S&-&, tech industry fight over email privacy heads to appeals court
+By Joseph Ax | NEW YORK
+NEW YORK A U&-&S&-& appeals court on Wednesday will consider whether U&-&S&-& law enforcement can make American technology companies hand over customers' emails held overseas, in a case closely watched by privacy advocates, news organizations and business groups.
+Microsoft Corp is challenging a U&-&S&-& search warrant seeking the emails of an individual stored on a server in Ireland as part of a drug investigation. Details of the probe, including the identity of the person, have not been made public.
+The case is the first in which a U&-&S&-& corporation has fought a warrant seeking data held abroad.
+Last year, a federal judge said Microsoft must turn over the information. U&-&S&-& District Judge Loretta Preska said the issue was whether the company controlled access to the emails, rather than the location where they are housed.
+In recent years, tech companies have begun building servers in foreign countries to speed up service for overseas customers.
+In friend-of-the-court briefs to the 2nd U&-&S&-& Circuit Court of Appeals in New York, companies such as Verizon Communications Inc and Cisco Systems Inc warned their business could be harmed if users fear their private data is subject to seizure by U&-&S&-& investigators regardless of where they live.
+Meanwhile, the U&-&S&-& government would be unable to object if foreign governments used warrants to force corporations to hand over emails held in the United States, Microsoft argued&$&.The power to embark on unilateral law enforcement incursions into a foreign sovereign country - directly or indirectly - has profound foreign policy consequences," the company wrote&$&.Worse still, it threatens the privacy of U&-&S&-& citizens&$&.
+In response, the Obama administration said the request in question is more akin to a subpoena for records than a warrant requiring a physical search, since U&-&S&-& employees of Microsoft can access the emails&$&.A corporation cannot resist compliance with a subpoena merely on the ground that the responsive records are stored abroad," the government wrote.
+The appeal has drawn supporting briefs from nearly 100 organizations and individuals. Groups that are typically legal adversaries - the American Civil Liberties Union and the U&-&S&-& Chamber of Commerce, for instance - are backing Microsoft's position.
+News organizations from The Washington Post to Fox News have also filed papers in support of Microsoft, expressing concern that U&-&S&-& law enforcement could gain access to journalists' private notes anywhere in the world.
+Next In Credit RSS
