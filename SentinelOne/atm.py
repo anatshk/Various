@@ -50,10 +50,13 @@ Let me know if you have any questions.
 Thanks!
 """
 
+import os
 
 class User:
     def __init__(self, password, balance, atm=None):
-        assert balance > 0, 'cannot open a new user with negative balance'
+        assert balance >= 0, 'cannot open a new user with negative balance'
+        assert isinstance(password, int) or (isinstance(password, basestring) and password.isdigit()), \
+            'password must contain numbers only'
         self.password = password
         self.balance = balance
         self.atm = atm  # ATM instance that the user belongs to
@@ -85,38 +88,71 @@ class User:
 
     def user_menu(self):
         # TODO: show user menu and perform actions according to selection
-        pass
 
+        os.system('cls')
+        print "Welcome to the User Menu"
+        print "1. Check Balance"
+        print "2. Deposit"
+        print "3. Withdrawal"
+        print "4. Logout"
+
+        selection = input("Please select (1-4): ")
+        quit = False
+
+        while not quit:
+            if selection == 1:
+                self.check_balance()
+            elif selection == 2:
+                self.user_deposit()
+            elif selection == 3:
+                self.user_withdraw()
+            elif selection == 4:
+                quit = True
+            else:
+                selection = input("Wrong selection, please select: "
+                                  "\n(1) Check Balance, "
+                                  "\n(2) Deposit,"
+                                  "\n(3) Withdrawal, "
+                                  "\n(4) Logout: ")
 
 class ATM:
     def __init__(self):
-        self.users = []
+        self.users = {}
+        self.quit = False
 
     # TODO: convert to a property?
     def _get_all_unique_passwords(self):
-        return [u.password for u in self.users]
+        return self.users.keys()
 
     def _add_user(self, password, balance):
-        # TODO: validate password is unique
-        # TODO: update user.atm with self
-        # TODO: add a new instance of User to self.users
-
-        assert password not in self._get_all_unique_passwords(), 'cannot add user with existing password {}'.format(password)
-
-        user = User(password, balance, atm=self)
-        self.users.append(user)
+        assert password not in self._get_all_unique_passwords(), \
+            'cannot add user with existing password {}'.format(password)
+        self.users.update({password: User(password, balance, atm=self)})
 
     def main_screen(self):
-        # TODO: init quit as False
-        # TODO: show login \ quit options
-        # TODO: call user_login if login selected
-        # TODO: terminate if quit selected
-        pass
+        os.system('cls')
+        print "Welcome to the ATM"
+        print "1. Login"
+        print "2. Quit"
+        selection = input("Please select (1 or 2): ")
+
+        while not self.quit:
+            if selection == 1:
+                self.user_login()
+            elif selection == 2:
+                print "Thank you for using the ATM!"
+                self.quit = True
+            else:
+                selection = input("Wrong selection, please select (1) to Login or (2) to quit: ")
 
     def user_login(self):
-        # TODO: prompt for password
-        # TODO: validate password exists in available users, return to main screen if not
-        # TODO: get specific User instance from self.users
-        # TODO: display user menu
-        pass
+        os.system('cls')
+        print "Welcome to the Login Screen"
+        password = input("Please insert your password: ")
 
+        if password in self._get_all_unique_passwords():
+            current_user = self.users[password]
+            current_user.user_menu()
+        else:
+            _ = input("Password does not exist, press any key to go back to main screen")
+            self.main_screen()

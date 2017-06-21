@@ -10,9 +10,17 @@ class TestUser(TestCase):
         self.assertEqual(user.balance, 5)
         self.assertEqual(user.password, 123)
 
+        user = User(password='123', balance=5)
+        self.assertEqual(user.balance, 5)
+        self.assertEqual(user.password, '123')
+
     def test_negative_balance_init(self):
         with self.assertRaisesRegexp(AssertionError, 'cannot open a new user with negative balance'):
             User(password=123, balance=-5)
+
+    def test_unsupported_password_init(self):
+        with self.assertRaisesRegexp(AssertionError, 'password must contain numbers only'):
+            User(password='1abv', balance=5)
 
     def test_check_balance(self):
         user = User(password=456, balance=500)
@@ -39,13 +47,14 @@ class TestATM(TestCase):
     def test_init(self):
         atm = ATM()
 
-        self.assertEqual(atm.users, [])
+        self.assertEqual(atm.users, {})
+        self.assertEqual(atm.quit, False)
 
     def test_add_users(self):
         atm = ATM()
         atm._add_user(password=123, balance=15)
 
-        expected_users = [User(123, 15, atm)]
+        expected_users = {123: User(123, 15, atm)}
         for user, expected_user in zip(atm.users, expected_users):
             self.assertEqual(user, expected_user)
 
@@ -63,4 +72,4 @@ class TestATM(TestCase):
         atm._add_user(password=456, balance=15)
 
         expected_passwords = [123, 555, 456]
-        self.assertEqual(atm._get_all_unique_passwords(), expected_passwords)
+        self.assertEqual(sorted(atm._get_all_unique_passwords()), sorted(expected_passwords))
