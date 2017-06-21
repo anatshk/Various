@@ -50,6 +50,8 @@ Let me know if you have any questions.
 Thanks!
 """
 
+# helper functions region
+
 
 def cls():
     """
@@ -64,6 +66,22 @@ def loop_until_input_is_from_list(prompt_string, accepted_values):
     while value not in accepted_values:
         value = raw_input(prompt_string)
     return value
+
+
+def loop_until_numeric_positive(prompt_string):
+    value = raw_input(prompt_string)
+    while True:
+        try:
+            value = float(value)
+            if value < 0:
+                value = raw_input("{} is not positive. {}".format(value, prompt_string))
+            else:
+                break
+        except:
+            value = raw_input("{} is not numeric. {}".format(value, prompt_string))
+    return value
+
+# end helper functions region
 
 
 class User:
@@ -91,13 +109,11 @@ class User:
         self.balance -= withdrawal_sum
 
     def user_deposit(self):
-        deposit_sum = float(raw_input("Enter Deposit: "))
-        assert deposit_sum > 0
+        deposit_sum = loop_until_numeric_positive("Enter Deposit: ")
         self._deposit(deposit_sum)
 
     def user_withdraw(self):
-        withdrawal_sum = float(raw_input("Enter Withdrawal: "))
-        assert withdrawal_sum > 0
+        withdrawal_sum = loop_until_numeric_positive("Enter Withdrawal: ")
         if withdrawal_sum > self.balance:
             print "You attempted to withdraw {}. Max withdrawal allowed is {}.".format(
                 withdrawal_sum, self.balance
@@ -124,7 +140,7 @@ class UserMenu:
     def run(self):
         selection = self._init_user_screen()
 
-        while not self.quit:
+        while True:
             if selection == '1':
                 print "Your balance is: {}".format(self.user.check_balance())
             elif selection == '2':
@@ -132,7 +148,7 @@ class UserMenu:
             elif selection == '3':
                 self.user.user_withdraw()
             elif selection == '4':
-                self.quit = True
+                break
             else:
                 selection = loop_until_input_is_from_list(
                     prompt_string="Wrong selection, please select: "
@@ -200,14 +216,15 @@ class ATMDisplay:
         print "Welcome to the Login Screen"
         password = raw_input("Please insert your password: ")
 
-        if password in self.atm.get_all_unique_passwords():
-            current_user = self.atm.users[password]
-            user_menu = UserMenu(current_user)
-            user_menu.run()
-        else:
-            try_num = 3
-            while try_num and password not in self.atm.get_all_unique_passwords():
-                print "Password does not exist, try again ({}) tries left.".format(try_num)
-                password = raw_input("Please insert your password: ")
-                try_num -= 1
-            return
+        try_num = 3
+        while True:
+            if not try_num:
+                return
+            if password in self.atm.get_all_unique_passwords():
+                break
+            print "Password does not exist, try again ({}) tries left.".format(try_num)
+            password = raw_input("Please insert your password: ")
+            try_num -= 1
+        current_user = self.atm.users[password]
+        user_menu = UserMenu(current_user)
+        user_menu.run()
