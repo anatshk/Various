@@ -22,6 +22,9 @@ class TestUser(TestCase):
         with self.assertRaisesRegexp(AssertionError, 'password must contain numbers only'):
             User(password='1abv', balance=5)
 
+    def test_repr(self):
+        self.assertEqual(User(333, 555).__repr__(), 'User(password=333, balance=555)')
+
     def test_check_balance(self):
         user = User(password=456, balance=500)
 
@@ -58,6 +61,14 @@ class TestATM(TestCase):
         for user, expected_user in zip(atm.users, expected_users):
             self.assertEqual(user, expected_user)
 
+    def test_repr(self):
+        atm = ATM()
+        atm._add_user(password=123, balance=15)
+        atm._add_user(password=444, balance=6)
+
+        self.assertEqual(atm.__repr__(), "ATM(User(password=123, balance=15),"
+                                         "\n    User(password=444, balance=6))")
+
     def test_add_non_unique_user(self):
         atm = ATM()
         atm._add_user(password=123, balance=15)
@@ -72,4 +83,4 @@ class TestATM(TestCase):
         atm._add_user(password=456, balance=15)
 
         expected_passwords = [123, 555, 456]
-        self.assertEqual(sorted(atm._get_all_unique_passwords()), sorted(expected_passwords))
+        self.assertEqual(sorted(atm.get_all_unique_passwords()), sorted(expected_passwords))

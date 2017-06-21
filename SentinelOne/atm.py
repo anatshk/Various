@@ -50,7 +50,21 @@ Let me know if you have any questions.
 Thanks!
 """
 
-import os
+
+def cls():
+    """
+    Hack to clear console screen as os.system('cls') did not work as expected.
+    :return:
+    """
+    print "\n" * 100
+
+
+def loop_until_input_is_from_list(prompt_string, accepted_values):
+    value = raw_input(prompt_string)
+    while value not in accepted_values:
+        value = raw_input(prompt_string)
+    return value
+
 
 class User:
     def __init__(self, password, balance, atm=None):
@@ -64,6 +78,9 @@ class User:
     def __eq__(self, other):
         return self.balance == other.balance and self.password == other.password
 
+    def __repr__(self):
+        return "User(password={}, balance={})".format(self.password, self.balance)
+
     def check_balance(self):
         return self.balance
 
@@ -74,85 +91,123 @@ class User:
         self.balance -= withdrawal_sum
 
     def user_deposit(self):
-        deposit_sum = float(input("Enter Deposit"))
+        deposit_sum = float(raw_input("Enter Deposit: "))
         assert deposit_sum > 0
         self._deposit(deposit_sum)
 
     def user_withdraw(self):
-        withdrawal_sum = float(input("Enter Withdrawal"))
+        withdrawal_sum = float(raw_input("Enter Withdrawal: "))
         assert withdrawal_sum > 0
         if withdrawal_sum > self.balance:
-            # TODO: disallow transaction, return to user screen
-            pass
+            print "You attempted to withdraw {}. Max withdrawal allowed is {}.".format(
+                withdrawal_sum, self.balance
+            )
+            return
         self._withdraw(withdrawal_sum)
 
-    def user_menu(self):
-        # TODO: show user menu and perform actions according to selection
 
-        os.system('cls')
+class UserMenu:
+    def __init__(self, user):
+        self.user = user
+        self.quit = False
+
+    def _init_user_screen(self):
+        cls()
         print "Welcome to the User Menu"
         print "1. Check Balance"
         print "2. Deposit"
         print "3. Withdrawal"
         print "4. Logout"
 
-        selection = input("Please select (1-4): ")
-        quit = False
+        return raw_input("Please select (1-4): ")
 
-        while not quit:
-            if selection == 1:
-                self.check_balance()
-            elif selection == 2:
-                self.user_deposit()
-            elif selection == 3:
-                self.user_withdraw()
-            elif selection == 4:
-                quit = True
+    def run(self):
+        selection = self._init_user_screen()
+
+        while not self.quit:
+            if selection == '1':
+                print "Your balance is: {}".format(self.user.check_balance())
+            elif selection == '2':
+                self.user.user_deposit()
+            elif selection == '3':
+                self.user.user_withdraw()
+            elif selection == '4':
+                self.quit = True
             else:
-                selection = input("Wrong selection, please select: "
+                selection = loop_until_input_is_from_list(
+                    prompt_string="Wrong selection, please select: "
                                   "\n(1) Check Balance, "
                                   "\n(2) Deposit,"
                                   "\n(3) Withdrawal, "
-                                  "\n(4) Logout: ")
+                                  "\n(4) Logout: ",
+                    accepted_values=['1', '2', '3', '4'])
+                continue
+            another_action = loop_until_input_is_from_list("Perform another action? (Y\N): ", ['y', 'n'])
+
+            if another_action.lower() == 'y':
+                selection = self._init_user_screen()
+            else:
+                return
+
 
 class ATM:
     def __init__(self):
         self.users = {}
         self.quit = False
 
+    def __repr__(self):
+        users = [u.__repr__() for u in self.users.values()]
+        return "ATM({})".format(',\n    '.join(users))
+
     # TODO: convert to a property?
-    def _get_all_unique_passwords(self):
+    def get_all_unique_passwords(self):
         return self.users.keys()
 
     def _add_user(self, password, balance):
-        assert password not in self._get_all_unique_passwords(), \
+        assert password not in self.get_all_unique_passwords(), \
             'cannot add user with existing password {}'.format(password)
         self.users.update({password: User(password, balance, atm=self)})
 
-    def main_screen(self):
-        os.system('cls')
+
+class ATMDisplay:
+    def __init__(self, atm):
+        self.atm = atm
+        self.quit = False
+
+    def _init_main_screen(self):
+        cls()
         print "Welcome to the ATM"
         print "1. Login"
         print "2. Quit"
-        selection = input("Please select (1 or 2): ")
+        return loop_until_input_is_from_list("Please select (1 or 2): ", ['1', '2'])
+
+    def run(self):
+        selection = self._init_main_screen()
 
         while not self.quit:
-            if selection == 1:
+            if selection == '1':
                 self.user_login()
-            elif selection == 2:
+                selection = self._init_main_screen()
+            elif selection == '2':
                 print "Thank you for using the ATM!"
                 self.quit = True
             else:
-                selection = input("Wrong selection, please select (1) to Login or (2) to quit: ")
+                selection = loop_until_input_is_from_list("Wrong selection, please select (1) to Login or (2) to Quit: ",
+                                                          ['1', '2'])
 
     def user_login(self):
-        os.system('cls')
+        cls()
         print "Welcome to the Login Screen"
-        password = input("Please insert your password: ")
+        password = raw_input("Please insert your password: ")
 
-        if password in self._get_all_unique_passwords():
-            current_user = self.users[password]
-            current_user.user_menu()
+        if password in self.atm.get_all_unique_passwords():
+            current_user = self.atm.users[password]
+            user_menu = UserMenu(current_user)
+            user_menu.run()
         else:
-            _ = input("Password does not exist, press any key to go back to main screen")
-            self.main_screen()
+            try_num = 3
+            while try_num and password not in self.atm.get_all_unique_passwords():
+                print "Password does not exist, try again ({}) tries left.".format(try_num)
+                password = raw_input("Please insert your password: ")
+                try_num -= 1
+            return
