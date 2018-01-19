@@ -176,7 +176,7 @@ def check_age(control, experiment):
     :param experiment: integer, age at experiment
     :return: True \ False if condition is filled
     """
-    return control > experiment + 1
+    return experiment <= control <= experiment + 1
 
 
 def check_parity(control, experiment):
@@ -247,7 +247,7 @@ def check_experiment_row(row, control_df):
     :param row:
     :return: list of suitable indices from control
     """
-
+    now = datetime.now()
     age_at_lapro = row.age_at_procedure
     parity_at_lapro = row.parity
     num_fetuses_at_lapro = row.num_fetuses
@@ -256,14 +256,22 @@ def check_experiment_row(row, control_df):
     args = (age_at_lapro, parity_at_lapro, num_fetuses_at_lapro, neonatal_birth_date_at_lapro)
     is_suitable = control_df.apply(check_control_row, axis=1, args=args)
     suitable_rows = control_df.iloc[list(is_suitable)][['full_name', 'id', 'calculated_maternal_age_at_birth_year',
-                                                       'parity', 'num_fetuses']]
+                                                       'parity', 'num_fetuses', 'new_index']]
+    column_mapping = {'full_name': 'ctrl_full_name', 'id': 'ctrl_id', 'parity': 'ctrl_parity', 'new_index': 'ctrl_index',
+                      'calculated_maternal_age_at_birth_year': 'ctrl_age', 'num_fetuses': 'ctrl_num_fetuses'}
+    suitable_rows.rename(column_mapping, axis='columns', inplace=True)
+    suitable_rows['run_ix'] = range(len(suitable_rows))
+    suitable_rows.set_index('run_ix', inplace=True)
     our_row = [row['full_name'], row['id'], row['age_at_procedure'], row['parity'], row['num_fetuses']]
     dup_df = pd.DataFrame([our_row] * len(suitable_rows),
                           columns=['exp_full_name', 'exp_id', 'exp_age', 'exp_parity', 'exp_num_fetuses'])
-    return pd.concat([dup_df, suitable_rows], ignore_index=True, axis=0)
+    dup_df['run_ix'] = range(len(dup_df))
+    dup_df.set_index('run_ix', inplace=True)
+    print 'finished one experiment row - took {} seconds'.format(datetime.now() - now)
+    return [dup_df.join(suitable_rows)]
 
 
-def find_suitable_indices(experiment_df, control_df, num_samples_control=2):
+def find_suitable_indices(experiment_df, control_df, num_samples_control=2, final_path='tmp.xlsx'):
     """
     Goes over each row in experiment and finds matches in control.
     This will provide us with a list of suitable indices from control.
@@ -275,12 +283,24 @@ def find_suitable_indices(experiment_df, control_df, num_samples_control=2):
     """
 
     # get list of controls per experiment row
-    experiment_df = experiment_df.iloc[:1]  # TODO: remove this for full data
-    matching_controls = experiment_df.apply(check_experiment_row, axis=1, args=(control_df,)).res
+    experiment_df = experiment_df.iloc[:20]  # TODO: remove this for full data
+    matching_controls = experiment_df.apply(check_experiment_row, axis=1, args=(control_df,)).id
 
-    # TODO: sample num_control_samples from each DF in matching_controls
+    columns = sorted(matching_controls.iloc[0].columns)
+    new_dataframe = pd.DataFrame(columns=columns)
+    for exp_row_ix in range(len(matching_controls)):
+        exp_row = matching_controls.iloc[exp_row_ix]
 
-    return matching_controls
+        if len(new_dataframe):
+            exp_row = remove_overlap(exp_row, new_dataframe, 'new_index')
+
+        if len(exp_row) >= num_samples_control:
+            sampled_controls = exp_row.sample(num_samples_control)
+        else:
+            sampled_controls = exp_row
+        new_dataframe = pd.concat([new_dataframe, sampled_controls])
+
+    new_dataframe.to_excel(final_path)
 
 
 # arrange data - control and experiment
@@ -295,6 +315,5 @@ else:
     save_to_pkl(clean_pkl, clean_experiment=clean_experiment, clean_control=clean_control)
 
 # find matches in control for rows from experiment
-res = find_suitable_indices(clean_experiment, clean_control, num_samples_control=2)
+res = find_suitable_indices(clean_experiment, clean_control, num_samples_control=2, final_path='tmp.xlsx')
 
-a = 5
