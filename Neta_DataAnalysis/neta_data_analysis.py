@@ -71,6 +71,18 @@ def create_new_index(df):
     return df
 
 
+def all_to_datetime(row, field):
+    date_str = row[field]
+    if isinstance(date_str, float) and str(date_str) == 'nan':
+        return None
+    if isinstance(date_str, pd.Timestamp):
+        return datetime(date_str.year, date_str.month, date_str.day)
+    year = int(date_str[0:4])
+    month = int(date_str[5:7])
+    day = int(date_str[8:10])
+    return datetime(year, month, day)
+
+
 def arrange_control(df, experiment_df):
     """
     Arranges the control file.
@@ -95,12 +107,15 @@ def arrange_control(df, experiment_df):
     df.drop_duplicates(inplace=True)
 
     # convert dates, if needed
-    a = 5
+    df['neonatal_birth_date'] = df.apply(all_to_datetime, axis=1, args=('neonatal_birth_date',))
 
     # TODO: calculate maternal age at birth? if columns are not timestamps - convert
 
     # remove from control any rows that exist in experiment
     df = remove_overlap(df, experiment_df, 'new_index')
+
+    # remove rows with missing information
+    df.dropna(subset=['neonatal_birth_date'], inplace=True)
 
     return df
 
@@ -132,6 +147,12 @@ def arrange_experiment(df):
 
     # increase number of fetuses (0 for 1 fetus)
     df['num_fetuses'] += 1
+
+    # convert dates, if needed
+    df['neonatal_birth_date'] = df.apply(all_to_datetime, axis=1, args=('neonatal_birth_date',))
+
+    # remove rows with missing information
+    df.dropna(subset=['neonatal_birth_date'], inplace=True)
 
     return df
 
@@ -234,7 +255,12 @@ def check_experiment_row(row, control_df):
 
     args = (age_at_lapro, parity_at_lapro, num_fetuses_at_lapro, neonatal_birth_date_at_lapro)
     is_suitable = control_df.apply(check_control_row, axis=1, args=args)
-    a = 5
+    suitable_rows = control_df.iloc[list(is_suitable)][['full_name', 'id', 'calculated_maternal_age_at_birth_year',
+                                                       'parity', 'num_fetuses']]
+    our_row = [row['full_name'], row['id'], row['age_at_procedure'], row['parity'], row['num_fetuses']]
+    dup_df = pd.DataFrame([our_row] * len(suitable_rows),
+                          columns=['exp_full_name', 'exp_id', 'exp_age', 'exp_parity', 'exp_num_fetuses'])
+    return pd.concat([dup_df, suitable_rows], ignore_index=True, axis=0)
 
 
 def find_suitable_indices(experiment_df, control_df, num_samples_control=2):
@@ -249,13 +275,12 @@ def find_suitable_indices(experiment_df, control_df, num_samples_control=2):
     """
 
     # get list of controls per experiment row
-    matching_controls = experiment_df.apply(check_experiment_row, axis=1, args=(control_df,))
+    experiment_df = experiment_df.iloc[:1]  # TODO: remove this for full data
+    matching_controls = experiment_df.apply(check_experiment_row, axis=1, args=(control_df,)).res
 
-    # arrange data in new dataframe - experiment row (duplicated) concatenated with each control row
+    # TODO: sample num_control_samples from each DF in matching_controls
 
-    return new_dataframe
-
-    a = 5
+    return matching_controls
 
 
 # arrange data - control and experiment
