@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
 
+from datetime import datetime
 from os import path
 from utils import save_to_pkl, load_from_pkl
 
@@ -42,8 +43,9 @@ if path.exists(pkl_pth):
     control = data['control']
     experiment = data['experiment']
 else:
-    control = pd.read_excel('control.xlsx').dropna(how='all')
-    experiment = pd.read_excel('experiment.xlsx', sheet_name='experiment').dropna(how='all')
+    control = pd.read_excel('control.xlsx',
+                            parse_dates=['maternal_birth_date', 'neonatal_birth_date']).dropna(how='all')
+    experiment = pd.read_excel('experiment.xlsx', sheet_name='experiment', parse_dates=['BirthDate']).dropna(how='all')
     save_to_pkl(pkl_pth, control=control, experiment=experiment)
 
 
@@ -77,7 +79,10 @@ def arrange_control(df, experiment_df):
     :return: Pandas frame
     """
     # remove redundant rows
-    df = df.drop('IRON NUM')
+    if 'IRON NUM' in df.index:
+        df = df.drop('IRON NUM')
+
+    # create new index
     df = create_new_index(df)
 
     # new column - count number of fetuses (= duplicate rows) - find duplicates and count
@@ -88,6 +93,9 @@ def arrange_control(df, experiment_df):
         return counted_multi_fetuses[row.new_index] if row.new_index in counted_multi_fetuses else 1
     df['num_fetuses'] = df.apply(num_fetuses, axis=1)
     df.drop_duplicates(inplace=True)
+
+    # convert dates, if needed
+    a = 5
 
     # TODO: calculate maternal age at birth? if columns are not timestamps - convert
 
@@ -118,8 +126,13 @@ def arrange_experiment(df):
     }
     df.rename(column_mapping, axis='columns', inplace=True)
 
+    # create new index and remove duplicates
     df = create_new_index(df)
     df.drop_duplicates(inplace=True)
+
+    # increase number of fetuses (0 for 1 fetus)
+    df['num_fetuses'] += 1
+
     return df
 
 
@@ -133,6 +146,51 @@ def remove_overlap(df1, df2, index_column):
     """
     indices_to_keep = list(set(df1[index_column]) - set(df2[index_column]))
     return df1.iloc[list(df1['new_index'].isin(indices_to_keep))]
+
+
+def check_age(control, experiment):
+    """
+    Compares age - Age at neonatal birth > age at lapro + 1 (surgery followed by birth or rounding down)
+    :param control: integer, age at control
+    :param experiment: integer, age at experiment
+    :return: True \ False if condition is filled
+    """
+    return control > experiment + 1
+
+
+def check_parity(control, experiment):
+    """
+    Compares parity - Same parity (1st, 2nd, 3rd etc birth).
+    :param control: parity at control
+    :param experiment: parity at experiment
+    :return: True \ False if condition is filled
+    """
+    return control == experiment
+
+
+def check_num_fetuses(control, experiment):
+    """
+    Compares number of fetuses - Same number of fetuses (single, twins, triplets, etc.)
+    :param control: number of fetuses at control
+    :param experiment: number of fetuses at experiment
+    :return: True \ False if condition is filled
+    """
+    return control == experiment
+
+
+def check_birth_date(control, experiment):
+    """
+    Compares neonatal birth dates - Similar neonatal birth date. For births between 2011-2016 we can find exact match, for earlier births,
+    find closest year and date within +/- 7 days. (20/10/2009 --> 13-27/10/2011).
+
+    :param control: neonatal birth date at control
+    :param experiment: neonatal birth date at experiment
+    :return: True \ False if condition is filled
+    """
+    day_diff = pd.Timedelta('7 days')
+    if not 2011 < experiment.year < 2016:
+        experiment = datetime(control.year, experiment.month, experiment.day)
+    return experiment - day_diff < control < experiment + day_diff
 
 
 def check_control_row(row, age_at_lapro, parity_at_lapro, num_fetuses_at_lapro, neonatal_birth_date_at_lapro):
@@ -150,10 +208,15 @@ def check_control_row(row, age_at_lapro, parity_at_lapro, num_fetuses_at_lapro, 
     :param parity_at_lapro:
     :param num_fetuses_at_lapro:
     :param neonatal_birth_date_at_lapro:
-    :return: True \ False f all consitions are filled
+    :return: True \ False for if conditions are filled
     """
-
-    a = 5
+    all_conditions = [
+        check_age(row.calculated_maternal_age_at_birth_year, age_at_lapro),
+        check_parity(row.parity, parity_at_lapro),
+        check_num_fetuses(row.num_fetuses, num_fetuses_at_lapro),
+        check_birth_date(row.neonatal_birth_date, neonatal_birth_date_at_lapro)
+    ]
+    return all(all_conditions)
 
 
 def check_experiment_row(row, control_df):
@@ -167,10 +230,9 @@ def check_experiment_row(row, control_df):
     age_at_lapro = row.age_at_procedure
     parity_at_lapro = row.parity
     num_fetuses_at_lapro = row.num_fetuses
-    neonatal_birth_date_at_lapro = neonatal_birth_date
+    neonatal_birth_date_at_lapro = row.neonatal_birth_date
 
-
-    args = (age_at_lapro, )
+    args = (age_at_lapro, parity_at_lapro, num_fetuses_at_lapro, neonatal_birth_date_at_lapro)
     is_suitable = control_df.apply(check_control_row, axis=1, args=args)
     a = 5
 
