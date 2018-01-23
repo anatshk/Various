@@ -166,7 +166,7 @@ def remove_overlap(df1, df2, index_column):
     :return: pandas dataframe
     """
     indices_to_keep = list(set(df1[index_column]) - set(df2[index_column]))
-    return df1.iloc[list(df1['new_index'].isin(indices_to_keep))]
+    return df1.iloc[list(df1[index_column].isin(indices_to_keep))]
 
 
 def check_age(control, experiment):
@@ -283,7 +283,7 @@ def find_suitable_indices(experiment_df, control_df, num_samples_control=2, fina
     """
 
     # get list of controls per experiment row
-    experiment_df = experiment_df.iloc[:20]  # TODO: remove this for full data
+    experiment_df = experiment_df.iloc[:15]  # TODO: remove this for full data
     matching_controls = experiment_df.apply(check_experiment_row, axis=1, args=(control_df,)).id
 
     columns = sorted(matching_controls.iloc[0].columns)
@@ -291,8 +291,8 @@ def find_suitable_indices(experiment_df, control_df, num_samples_control=2, fina
     for exp_row_ix in range(len(matching_controls)):
         exp_row = matching_controls.iloc[exp_row_ix]
 
-        if len(new_dataframe):
-            exp_row = remove_overlap(exp_row, new_dataframe, 'new_index')
+        if len(new_dataframe) and len(exp_row):
+            exp_row = remove_overlap(exp_row, new_dataframe, 'ctrl_index')
 
         if len(exp_row) >= num_samples_control:
             sampled_controls = exp_row.sample(num_samples_control)
