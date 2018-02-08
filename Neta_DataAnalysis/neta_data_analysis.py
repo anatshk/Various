@@ -255,9 +255,10 @@ def check_experiment_row(row, control_df):
 
     args = (age_at_lapro, parity_at_lapro, num_fetuses_at_lapro, neonatal_birth_date_at_lapro)
     is_suitable = control_df.apply(check_control_row, axis=1, args=args)
-    suitable_rows = control_df.iloc[list(is_suitable)][['full_name', 'id', 'calculated_maternal_age_at_birth_year',
+    suitable_rows = control_df.iloc[list(is_suitable)][['case', 'full_name', 'id', 'calculated_maternal_age_at_birth_year',
                                                        'parity', 'num_fetuses', 'new_index']]
-    column_mapping = {'full_name': 'ctrl_full_name', 'id': 'ctrl_id', 'parity': 'ctrl_parity', 'new_index': 'ctrl_index',
+    column_mapping = {'case': 'ctrl_case', 'full_name': 'ctrl_full_name', 'id': 'ctrl_id', 'parity': 'ctrl_parity',
+                      'new_index': 'ctrl_index',
                       'calculated_maternal_age_at_birth_year': 'ctrl_age', 'num_fetuses': 'ctrl_num_fetuses'}
     suitable_rows.rename(column_mapping, axis='columns', inplace=True)
     suitable_rows['run_ix'] = range(len(suitable_rows))
@@ -283,7 +284,7 @@ def find_suitable_indices(experiment_df, control_df, num_samples_control=2, fina
     """
 
     # get list of controls per experiment row
-    experiment_df = experiment_df.iloc[:15]  # TODO: remove this for full data
+    # experiment_df = experiment_df.iloc[:5]  # TODO: remove this for full data
     matching_controls = experiment_df.apply(check_experiment_row, axis=1, args=(control_df,)).id
 
     columns = sorted(matching_controls.iloc[0].columns)
