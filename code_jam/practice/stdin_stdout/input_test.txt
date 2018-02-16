@@ -1,0 +1,7 @@
+7
+The above number gives the total number of lines in this file.
+Hello World!
+This is the 4th line.
+
+Wow, there was a blank line before me!
+This is the last line.
