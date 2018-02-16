@@ -1,5 +1,5 @@
 """
-Template for solution file
+Bathroom Stalls
 """
 
 DEBUG_FLAG = True
@@ -21,6 +21,10 @@ def main(file_to_load=None):
             line = f.readline()
         else:
             line = raw_input()  # read line
+
+        line = line.split(' ')
+        num_stalls = line[0]
+        num_people = line[1]
 
         print "Case #{}: {}".format(i, 'some string')
 
