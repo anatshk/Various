@@ -2,3 +2,4 @@ pandas
 xlrd==1.1.0
 openpyxl
 scipy
+pytest
