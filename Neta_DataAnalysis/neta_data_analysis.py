@@ -37,15 +37,16 @@ Other:
 """
 
 # load files
-pkl_pth = 'temp.pkl'
+pkl_pth = 'temp_12_2018.pkl'
 if path.exists(pkl_pth):
     data = load_from_pkl(pkl_pth)
     control = data['control']
     experiment = data['experiment']
 else:
-    control = pd.read_excel('control.xlsx',
-                            parse_dates=['maternal_birth_date', 'neonatal_birth_date']).dropna(how='all')
-    experiment = pd.read_excel('experiment.xlsx', sheet_name='experiment', parse_dates=['BirthDate']).dropna(how='all')
+    control = pd.read_excel('control_2.xlsx').dropna(how='all')
+                            # parse_dates=['maternal_birth_date', 'neonatal_birth_date']).dropna(how='all')
+    # experiment = pd.read_excel('experiment_2.xlsx', sheet_name='experiment', parse_dates=['BirthDate']).dropna(how='all')
+    experiment = pd.read_excel('experiment_2.xlsx').dropna(how='all')
     save_to_pkl(pkl_pth, control=control, experiment=experiment)
 
 
@@ -73,6 +74,8 @@ def create_new_index(df):
 
 def all_to_datetime(row, field):
     date_str = row[field]
+    if isinstance(date_str, datetime):
+        return date_str
     if isinstance(date_str, float) and str(date_str) == 'nan':
         return None
     if isinstance(date_str, pd.Timestamp):
@@ -129,17 +132,21 @@ def arrange_experiment(df):
 
     # re-arrange column names
     column_mapping = {
-        u'שם מלא': 'full_name',
-        u'מספר ת_ז': 'id',
-        u'גיל ': 'age_at_procedure',
+        # u'שם מלא': 'full_name',
+        u'name': 'full_name',
+        # u'מספר ת_ז': 'id',
+        u'ID': 'id',
+        # u'גיל ': 'age_at_procedure',
+        u'age': 'age_at_procedure',
         u'BirthDate': 'neonatal_birth_date',
-        u'P': 'parity',
+        u'parity': 'parity',
+        # u'P': 'parity',
         u'Is_twins?': 'num_fetuses',
         u'הוצא מהביקורת ': 'removed_from_control',
         u'ביקורת 1': 'control_1',
         u'ביקורת 2 ': 'control_2'
     }
-    df.rename(column_mapping, axis='columns', inplace=True)
+    df.rename(columns=column_mapping, inplace=True)
 
     # create new index and remove duplicates
     df = create_new_index(df)
@@ -260,7 +267,7 @@ def check_experiment_row(row, control_df):
     column_mapping = {'case': 'ctrl_case', 'full_name': 'ctrl_full_name', 'id': 'ctrl_id', 'parity': 'ctrl_parity',
                       'new_index': 'ctrl_index',
                       'calculated_maternal_age_at_birth_year': 'ctrl_age', 'num_fetuses': 'ctrl_num_fetuses'}
-    suitable_rows.rename(column_mapping, axis='columns', inplace=True)
+    suitable_rows.rename(columns=column_mapping, inplace=True)
     suitable_rows['run_ix'] = range(len(suitable_rows))
     suitable_rows.set_index('run_ix', inplace=True)
     our_row = [row['full_name'], row['id'], row['age_at_procedure'], row['parity'], row['num_fetuses']]
@@ -268,7 +275,7 @@ def check_experiment_row(row, control_df):
                           columns=['exp_full_name', 'exp_id', 'exp_age', 'exp_parity', 'exp_num_fetuses'])
     dup_df['run_ix'] = range(len(dup_df))
     dup_df.set_index('run_ix', inplace=True)
-    print 'finished one experiment row - took {} seconds'.format(datetime.now() - now)
+    print('finished one experiment row - took {} seconds'.format(datetime.now() - now))
     return [dup_df.join(suitable_rows)]
 
 
@@ -305,7 +312,7 @@ def find_suitable_indices(experiment_df, control_df, num_samples_control=2, fina
 
 
 # arrange data - control and experiment
-clean_pkl = 'clean_temp.pkl'
+clean_pkl = 'clean_temp_2.pkl'
 if path.exists(clean_pkl):
     data = load_from_pkl(clean_pkl)
     clean_experiment = data['clean_experiment']
@@ -316,5 +323,7 @@ else:
     save_to_pkl(clean_pkl, clean_experiment=clean_experiment, clean_control=clean_control)
 
 # find matches in control for rows from experiment
-res = find_suitable_indices(clean_experiment, clean_control, num_samples_control=2, final_path='tmp.xlsx')
+find_suitable_indices(clean_experiment, clean_control,
+                      num_samples_control=2, final_path='tmp_2.xlsx')
+
 
